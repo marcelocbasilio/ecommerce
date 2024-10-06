@@ -1,29 +1,25 @@
 package com.marcelocbasilio.ecommerce.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_user")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
 
     @Column(unique = true)
     private String email;
-
     private String phone;
-
     private LocalDate birthDate;
-
     private String password;
 
     @ManyToMany
@@ -36,12 +32,12 @@ public class User {
     }
 
     public User(Long id, String name, String email, String phone, LocalDate birthDate, String password) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.birthDate = birthDate;
-        this.password = password;
+        this.setId(id);
+        this.setName(name);
+        this.setEmail(email);
+        this.setPhone(phone);
+        this.setBirthDate(birthDate);
+        this.setPassword(password);
     }
 
     public Long getId() {
@@ -123,5 +119,35 @@ public class User {
         result = 31 * result + Objects.hashCode(birthDate);
         result = 31 * result + password.hashCode();
         return result;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
