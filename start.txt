@@ -1,0 +1,1 @@
+https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.3.5&packaging=jar&jvmVersion=17&groupId=com.marcelocbasilio&artifactId=ecommerce&name=ecommerce&description=Project%20ecommerce&packageName=com.marcelocbasilio.ecommerce&dependencies=web,security,data-jpa,jdbc,h2,oauth2-resource-server

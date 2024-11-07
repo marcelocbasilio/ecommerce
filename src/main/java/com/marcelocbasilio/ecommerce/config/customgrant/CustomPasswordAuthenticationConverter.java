@@ -69,7 +69,7 @@ public class CustomPasswordAuthenticationConverter implements AuthenticationConv
         });
 
         Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();
-        return new CustomPasswordAuthenticationToken(clientPrincipal, requestedScopes, additionalParameters);
+        return (Authentication) new CustomPasswordAuthenticationToken(clientPrincipal, requestedScopes, additionalParameters);
     }
 
     private static MultiValueMap<String, String> getParameters(HttpServletRequest request) {
