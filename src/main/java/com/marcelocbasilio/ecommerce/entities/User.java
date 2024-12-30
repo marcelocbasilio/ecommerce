@@ -5,7 +5,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_user")
@@ -32,12 +35,12 @@ public class User implements UserDetails {
     }
 
     public User(Long id, String name, String email, String phone, LocalDate birthDate, String password) {
-        this.setId(id);
-        this.setName(name);
-        this.setEmail(email);
-        this.setPhone(phone);
-        this.setBirthDate(birthDate);
-        this.setPassword(password);
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.birthDate = birthDate;
+        this.password = password;
     }
 
     public Long getId() {
@@ -89,14 +92,10 @@ public class User implements UserDetails {
     }
 
     public void addRole(Role role) {
-        this.roles.add(role);
+        roles.add(role);
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public Boolean hasRole(String roleName) {
+    public boolean hasRole(String roleName) {
         for (Role role : roles) {
             if (role.getAuthority().equals(roleName)) {
                 return true;
@@ -105,24 +104,23 @@ public class User implements UserDetails {
         return false;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
-        return Objects.equals(id, user.id) && name.equals(user.name) && email.equals(user.email) && Objects.equals(phone, user.phone) && Objects.equals(birthDate, user.birthDate) && password.equals(user.password);
+
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(id);
-        result = 31 * result + name.hashCode();
-        result = 31 * result + email.hashCode();
-        result = 31 * result + Objects.hashCode(phone);
-        result = 31 * result + Objects.hashCode(birthDate);
-        result = 31 * result + password.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
@@ -132,7 +130,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return email;
     }
 
     @Override

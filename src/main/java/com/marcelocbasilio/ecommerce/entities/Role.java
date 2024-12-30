@@ -3,6 +3,8 @@ package com.marcelocbasilio.ecommerce.entities;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "tb_role")
 public class Role implements GrantedAuthority {
@@ -38,16 +40,19 @@ public class Role implements GrantedAuthority {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Role role = (Role) o;
-        return authority.equals(role.authority);
+    public int hashCode() {
+        return Objects.hash(authority);
     }
 
     @Override
-    public int hashCode() {
-        return authority.hashCode();
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Role other = (Role) obj;
+        return Objects.equals(authority, other.authority);
     }
 }

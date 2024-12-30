@@ -1,25 +1,33 @@
 package com.marcelocbasilio.ecommerce.dto;
 
+import com.marcelocbasilio.ecommerce.entities.Category;
 import com.marcelocbasilio.ecommerce.entities.Product;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductDTO {
 
-    private Long id;
+    private final Long id;
 
     @Size(min = 3, max = 80, message = "Nome precisa ter de 3 a 80 caracteres")
     @NotBlank(message = "Campo requerido")
-    private String name;
+    private final String name;
 
     @Size(min = 10, message = "Descrição precisa ter no mínimo 10 caracteres")
     @NotBlank(message = "Campo requerido")
-    private String description;
+    private final String description;
 
     @Positive(message = "O preço deve ser positivo")
-    private Double price;
-    private String imgUrl;
+    private final Double price;
+    private final String imgUrl;
+
+    @NotEmpty(message = "Deve ter pelo menos uma categoria")
+    private final List<CategoryDTO> categories = new ArrayList<>();
 
     public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
@@ -35,6 +43,9 @@ public class ProductDTO {
         description = product.getDescription();
         price = product.getPrice();
         imgUrl = product.getImgUrl();
+        for (Category cat : product.getCategories()) {
+            categories.add(new CategoryDTO(cat));
+        }
     }
 
     public Long getId() {
@@ -55,5 +66,9 @@ public class ProductDTO {
 
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    public List<CategoryDTO> getCategories() {
+        return categories;
     }
 }
