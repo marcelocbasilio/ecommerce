@@ -1,7 +1,11 @@
 package com.marcelocbasilio.ecommerce.controllers;
 
 import com.marcelocbasilio.ecommerce.dto.ProductDTO;
+import com.marcelocbasilio.ecommerce.dto.ProductMinDTO;
 import com.marcelocbasilio.ecommerce.services.ProductService;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +24,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<ProductDTO>> findAll() {
-        List<ProductDTO> list = productService.findAll();
-        return ResponseEntity.ok(list);
-    }
-
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
@@ -33,9 +31,15 @@ public class ProductController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping
+    public ResponseEntity<Page<ProductMinDTO>> findAll(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
+        Page<ProductMinDTO> dto = productService.findAll(name, pageable);
+        return ResponseEntity.ok(dto);
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
         dto = productService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
