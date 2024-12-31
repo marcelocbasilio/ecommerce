@@ -3,6 +3,7 @@ package com.marcelocbasilio.ecommerce.dto;
 import com.marcelocbasilio.ecommerce.entities.Order;
 import com.marcelocbasilio.ecommerce.entities.OrderItem;
 import com.marcelocbasilio.ecommerce.entities.OrderStatus;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -20,6 +21,8 @@ public class OrderDTO implements Serializable {
     private final OrderStatus status;
     private final ClientDTO client;
     private final PaymentDTO payment;
+
+    @NotEmpty(message = "Deve ter pelo menos um item")
     private final List<OrderItemDTO> items = new ArrayList<>();
 
     public OrderDTO(Long id, Instant moment, OrderStatus status, ClientDTO client, PaymentDTO payment) {
