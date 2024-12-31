@@ -12,14 +12,16 @@ public class OrderItemDTO implements Serializable {
 
     private final Long productId;
     private final String name;
-    private final Integer quantity;
     private final Double price;
+    private final Integer quantity;
+    private final String imgUrl;
 
-    public OrderItemDTO(Long productId, String name, Integer quantity, Double price) {
+    public OrderItemDTO(Long productId, String name, Integer quantity, Double price, String imgUrl) {
         this.productId = productId;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
+        this.imgUrl = imgUrl;
     }
 
     public OrderItemDTO(OrderItem orderItem) {
@@ -27,6 +29,7 @@ public class OrderItemDTO implements Serializable {
         name = orderItem.getProduct().getName();
         quantity = orderItem.getQuantity();
         price = orderItem.getPrice();
+        imgUrl = orderItem.getProduct().getImgUrl();
     }
 
     public Long getProductId() {
@@ -47,6 +50,10 @@ public class OrderItemDTO implements Serializable {
 
     public Double getSubTotal() {
         return price * quantity;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
     }
 
     @Override
