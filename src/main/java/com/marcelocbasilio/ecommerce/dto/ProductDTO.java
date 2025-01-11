@@ -2,10 +2,7 @@ package com.marcelocbasilio.ecommerce.dto;
 
 import com.marcelocbasilio.ecommerce.entities.Category;
 import com.marcelocbasilio.ecommerce.entities.Product;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +19,7 @@ public class ProductDTO {
     @NotBlank(message = "Campo requerido")
     private final String description;
 
+    @NotNull(message = "Campo requerido")
     @Positive(message = "O preço deve ser positivo")
     private final Double price;
     private final String imgUrl;
